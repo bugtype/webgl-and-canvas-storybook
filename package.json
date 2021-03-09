@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest test",
-    "storybook": "start-storybook -p 6006 -s public",
+    "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o public"
   },
   "eslintConfig": {

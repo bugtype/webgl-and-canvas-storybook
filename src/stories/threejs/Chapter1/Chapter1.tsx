@@ -18,7 +18,23 @@ export class Chapter1 extends React.Component {
     var axes = new THREE.AxisHelper(20);
     scene.add(axes);
 
-    // camera.lookAt(scene.position);
+    var planGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
+    var planMaterial = new THREE.MeshBasicMaterial({ color: 0xccccccc });
+    var plane = new THREE.Mesh(planGeometry, planMaterial);
+
+    plane.rotation.x = -0.5 * Math.PI;
+    plane.position.x = 15;
+    plane.position.y = 0;
+    plane.position.z = 0;
+
+    scene.add(plane);
+
+    camera.position.x = -30;
+    camera.position.y = 40;
+    camera.position.z = 30;
+    camera.lookAt(scene.position);
+
+    this.mount.appendChild(renderer.domElement);
     renderer.render(scene, camera);
   }
   render() {
