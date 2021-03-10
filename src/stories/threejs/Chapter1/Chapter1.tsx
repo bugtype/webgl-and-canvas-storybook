@@ -15,7 +15,7 @@ export class Chapter1 extends React.Component {
     renderer.setClearColor(new THREE.Color(0xeeeeee));
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    var axes = new THREE.AxisHelper(20);
+    var axes = new THREE.AxisHelper(100);
     scene.add(axes);
 
     var planGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
@@ -28,6 +28,19 @@ export class Chapter1 extends React.Component {
     plane.position.z = 0;
 
     scene.add(plane);
+
+    var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
+    var cubeMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff000,
+      wireframe: true,
+    });
+    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+    cube.position.x = -4;
+    cube.position.y = 3;
+    cube.position.z = 0;
+
+    scene.add(cube);
 
     camera.position.x = -30;
     camera.position.y = 40;
