@@ -31,6 +31,7 @@ export class Square extends React.Component {
     };
     animate();
   }
+
   render() {
     return <div ref={(ref) => (this.mount = ref)} />;
   }
