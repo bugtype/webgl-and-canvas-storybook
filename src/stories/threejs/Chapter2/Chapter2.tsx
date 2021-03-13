@@ -95,27 +95,63 @@ function hello(mount, mount2) {
 
     var controls = new (function () {
       this.rotationSpeed = 0.02;
-      this.bouncingSpeed = 0.03;
-      this.ambientColor = ambiColor;
-      this.disableSpotlight = false;
+      this.numberOfObjects = scene.children.length;
+
+      this.removeCube = function () {
+        var allChildren = scene.children;
+        var lastObject = allChildren[allChildren.length - 1];
+        if (lastObject instanceof THREE.Mesh) {
+          scene.remove(lastObject);
+          this.numberOfObjects = scene.children.length;
+        }
+      };
+
+      this.addCube = function () {
+        var cubeSize = Math.ceil(Math.random() * 3);
+        var cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+        var cubeMaterial = new THREE.MeshLambertMaterial({
+          color: Math.random() * 0xffffff,
+        });
+        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.castShadow = true;
+
+        // position the cube randomly in the scene
+        cube.position.x =
+          -30 + Math.round(Math.random() * planeGeometry.parameters.width);
+        cube.position.y = Math.round(Math.random() * 5);
+        cube.position.z =
+          -20 + Math.round(Math.random() * planeGeometry.parameters.height);
+
+        // add the cube to the scene
+        scene.add(cube);
+        this.numberOfObjects = scene.children.length;
+      };
+
+      this.outputObjects = function () {
+        console.log(scene.children);
+      };
     })();
 
     var gui = new dat.GUI();
-    gui.addColor(controls, 'ambientColor').onChange(function (e) {
-      ambientLight.color = new THREE.Color(e);
-    });
-    gui.add(controls, 'disableSpotlight').onChange(function (e) {
-      spotLight.visible = !e;
-    });
+    gui.add(controls, 'rotationSpeed', 0, 0.5);
+    gui.add(controls, 'addCube');
+    gui.add(controls, 'removeCube');
+    gui.add(controls, 'outputObjects');
+    gui.add(controls, 'numberOfObjects').listen();
 
     render();
 
     function render() {
       stats.update();
-      // rotate the cube around its axes
-      cube.rotation.x += controls.rotationSpeed;
-      cube.rotation.y += controls.rotationSpeed;
-      cube.rotation.z += controls.rotationSpeed;
+
+      scene.traverse((obj) => {
+        if (obj instanceof THREE.Mesh && obj != plane) {
+          // rotate the cube around its axes
+          obj.rotation.x += controls.rotationSpeed;
+          obj.rotation.y += controls.rotationSpeed;
+          obj.rotation.z += controls.rotationSpeed;
+        }
+      });
 
       // bounce the sphere up and down
       step += controls.bouncingSpeed;
