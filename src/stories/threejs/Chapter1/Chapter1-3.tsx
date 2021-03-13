@@ -2,7 +2,7 @@
 import React from 'react';
 import * as THREE from 'three';
 
-export class Chapter1_2 extends React.Component {
+export class Chapter1_3 extends React.Component {
   componentDidMount() {
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(
@@ -69,8 +69,17 @@ export class Chapter1_2 extends React.Component {
     camera.position.z = 30;
     camera.lookAt(scene.position);
 
+    function renderScene() {
+      cube.rotation.x += 0.02;
+      cube.rotation.y += 0.02;
+      cube.rotation.z += 0.02;
+
+      requestAnimationFrame(renderScene);
+      renderer.render(scene, camera);
+    }
+
     this.mount.appendChild(renderer.domElement);
-    renderer.render(scene, camera);
+    renderScene();
   }
 
   makeSpotLight(scene: THREE.Scene) {
