@@ -1,7 +1,55 @@
-import { Meta } from "@storybook/addon-docs/blocks";
+import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="Canvas/Introduction" />
 
 # Canvas
 
 Html5 스펙에 있는 Canvas를 공부.
+
+## 요약
+
+### 기본 화면 정의
+
+Scene, Cameara를 정의한다.
+
+```ts
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+var renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(new THREE.Color(0xeeeeee, 1.0));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMapEnabled = true; // 그림자 정의
+
+// requestAnimationFrame - 프레임마다 사용시, ( setInterval은 성능+ 브라우져마다 Frame 주기가 다르기에 사용 X)
+requestAnimationFrame(render);
+renderer.render(scene, camera);
+```
+
+### 객체 종류 (Geometry)
+
+PlaneGeometry, BoxGeometry, SphereGeometry 가 있다.
+
+```ts
+// create a cube
+var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
+var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+cube.castShadow = true; // 그림자 정의
+
+// position the cube
+cube.position.x = -4;
+cube.position.y = 3;
+cube.position.z = 0;
+
+// add the cube to the scene
+scene.add(cube);
+```
+
+### Mesh 종류
+
+MeshLambertMaterial
